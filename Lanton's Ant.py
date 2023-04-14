@@ -13,8 +13,12 @@ class LangtonsAnt:
 
         if initial_state == "white":
             self.board = np.zeros(board_size)
-        else:
+        elif initial_state == "black":
             self.board = np.ones(board_size)
+        elif initial_state == "checkerboard":
+            self.board = np.indices(board_size).sum(axis=0) % 2
+        else:
+            raise ValueError(f"Invalid initial state: {initial_state}")
 
         self.directions = {
             "up": (-1, 0),
@@ -58,7 +62,7 @@ class LangtonsAnt:
         self.board[self.ant_position[0], self.ant_position[1]] = 1 - current_color
         self.move()
 
-    def run(self, output_file="langtons_ant.gif"):
+    def run(self, output_file="langtons_ant.gif", show_grid=False):
         if self.show_animation:
             fig, ax = plt.subplots()
             plt.axis("off")
@@ -77,7 +81,10 @@ class LangtonsAnt:
         else:
             for _ in range(self.iterations):
                 self.step()
+            plt.figure(figsize=(10, 10))
             plt.imshow(self.board, cmap="gray")
+            if show_grid:
+                plt.grid()
             plt.grid()
             plt.show()
 
@@ -88,8 +95,10 @@ if __name__ == "__main__":
     ant_direction = "up"
     move_rules = "rl"
     initial_state = "white"
-    interations = 1000
-    show_animation = True
+    interations = 12000
+    show_animation = False
+    show_grid = False
+    output_file = "langtons_ant.gif"
 
     ant_simulator = LangtonsAnt(board_size=board_size, ant_position=ant_position, ant_direction=ant_direction, move_rules=move_rules, initial_state=initial_state, iterations=interations, show_animation=show_animation)
-    ant_simulator.run()
+    ant_simulator.run(output_file=output_file, show_grid=show_grid)
