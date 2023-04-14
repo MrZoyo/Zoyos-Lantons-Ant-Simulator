@@ -1,5 +1,5 @@
 # Zoyos Lantons Ant Simulator
- A simple Landon ant simulator written in Python with customizable parameters.
+ A simple Lantons ant simulator written in Python with customizable parameters.
 ---
 The following parameters are described:
 
