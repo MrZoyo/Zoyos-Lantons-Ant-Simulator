@@ -12,3 +12,4 @@ The following parameters are described:
 - **show_animation:** whether to output the animation via matplotlib.pyplot (default is True)
 - **show_grid:** whether to add a grid to a static image
 - **show_info:** whether to display detailed parameters in a static image
+- **show_initial_ant:** whether to display the initial ant ant its direction
