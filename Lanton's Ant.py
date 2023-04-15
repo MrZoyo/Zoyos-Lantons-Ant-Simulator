@@ -3,13 +3,15 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 class LangtonsAnt:
-    def __init__(self, board_size=(100, 100), ant_position=(50, 50), ant_direction="up", move_rules="rl", initial_state="white", iterations=1000, show_animation=True):
+    def __init__(self, board_size=(100, 100), ant_position=(50, 50), ant_direction="up", move_rules="rl", initial_state="white", iterations=1000, show_animation=True, show_grid=False, show_info=True):
         self.board_size = board_size
         self.ant_position = list(ant_position)
         self.ant_direction = ant_direction
         self.move_rules = move_rules
         self.iterations = iterations
         self.show_animation = show_animation
+        self.show_grid = show_grid
+        self.show_info = show_info
 
         if initial_state == "white":
             self.board = np.zeros(board_size)
@@ -62,14 +64,14 @@ class LangtonsAnt:
         self.board[self.ant_position[0], self.ant_position[1]] = 1 - current_color
         self.move()
 
-    def run(self, output_file="langtons_ant.gif", show_grid=False):
+    def run(self, output_file="langtons_ant.gif"):
         if self.show_animation:
             fig, ax = plt.subplots()
             plt.axis("off")
             ims = []
 
             for _ in range(self.iterations):
-                im = ax.imshow(self.board, cmap="gray", animated=True)
+                im = ax.imshow(self.board, cmap="gray_r", animated=True)
                 ims.append([im])
                 self.step()
 
@@ -82,10 +84,16 @@ class LangtonsAnt:
             for _ in range(self.iterations):
                 self.step()
             plt.figure(figsize=(10, 10))
-            plt.imshow(self.board, cmap="gray")
-            if show_grid:
-                plt.grid()
-            plt.grid()
+            if self.show_info:
+                title = f"Langton's Ant\nBoard size: {self.board_size}\nSteps: {self.iterations}\nInitial direction: {self.ant_direction}\nMove rules: {self.move_rules}"
+                plt.title(title, fontsize=10, pad=15)
+            plt.imshow(self.board, cmap="gray_r")
+            if self.show_grid:
+                plt.grid(True, which='both', color='black', linewidth=1)
+                plt.xticks(np.arange(-0.5, self.board_size[1], 1), [])
+                plt.yticks(np.arange(-0.5, self.board_size[0], 1), [])
+            else:
+                plt.grid(False)
             plt.show()
 
 
@@ -95,10 +103,11 @@ if __name__ == "__main__":
     ant_direction = "up"
     move_rules = "rl"
     initial_state = "white"
-    interations = 12000
+    interations = 11000
     show_animation = False
     show_grid = False
+    show_info = True
     output_file = "langtons_ant.gif"
 
-    ant_simulator = LangtonsAnt(board_size=board_size, ant_position=ant_position, ant_direction=ant_direction, move_rules=move_rules, initial_state=initial_state, iterations=interations, show_animation=show_animation)
-    ant_simulator.run(output_file=output_file, show_grid=show_grid)
+    ant_simulator = LangtonsAnt(board_size=board_size, ant_position=ant_position, ant_direction=ant_direction, move_rules=move_rules, initial_state=initial_state, iterations=interations, show_animation=show_animation, show_grid=show_grid, show_info=show_info)
+    ant_simulator.run(output_file=output_file)
