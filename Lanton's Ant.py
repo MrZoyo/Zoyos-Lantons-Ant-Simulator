@@ -3,7 +3,18 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 class LangtonsAnt:
-    def __init__(self, board_size=(100, 100), ant_position=(50, 50), ant_direction="up", move_rules="rl", initial_state="white", iterations=1000, show_animation=True, show_grid=False, show_info=True):
+    def __init__(self,
+                 board_size=(100, 100),
+                 ant_position=(50, 50),
+                 ant_direction="up",
+                 move_rules="rl",
+                 initial_state="white",
+                 iterations=1000,
+                 show_animation=True,
+                 show_grid=False,
+                 show_info=True,
+                 show_initial_ant=True):
+
         self.board_size = board_size
         self.ant_position = list(ant_position)
         self.ant_direction = ant_direction
@@ -12,6 +23,7 @@ class LangtonsAnt:
         self.show_animation = show_animation
         self.show_grid = show_grid
         self.show_info = show_info
+        self.show_initial_ant = show_initial_ant
 
         if initial_state == "white":
             self.board = np.zeros(board_size)
@@ -81,13 +93,25 @@ class LangtonsAnt:
             plt.show()
 
         else:
+            initial_board = self.board.copy()
+            initial_ant_position = self.ant_position.copy()
+            initial_ant_direction = self.ant_direction
+
             for _ in range(self.iterations):
                 self.step()
             plt.figure(figsize=(10, 10))
+
+            direction_marker = {'up': '^', 'right': '>', 'down': 'v', 'left': '<'}
+
             if self.show_info:
-                title = f"Langton's Ant\nBoard size: {self.board_size}\nSteps: {self.iterations}\nInitial direction: {self.ant_direction}\nMove rules: {self.move_rules}"
+                title = f"Langton's Ant\nBoard size: {self.board_size}\nSteps: {self.iterations}\nInitial direction: {initial_ant_direction}\nMove rules: {self.move_rules}"
                 plt.title(title, fontsize=10, pad=15)
             plt.imshow(self.board, cmap="gray_r")
+
+            if self.show_initial_ant:
+                plt.scatter(initial_ant_position[0], initial_ant_position[1], s=100,
+                            marker=direction_marker[initial_ant_direction], color='red')
+
             if self.show_grid:
                 plt.grid(True, which='both', color='black', linewidth=1)
                 plt.xticks(np.arange(-0.5, self.board_size[1], 1), [])
@@ -107,7 +131,8 @@ if __name__ == "__main__":
     show_animation = False
     show_grid = False
     show_info = True
+    show_initial_ant = True
     output_file = "langtons_ant.gif"
 
-    ant_simulator = LangtonsAnt(board_size=board_size, ant_position=ant_position, ant_direction=ant_direction, move_rules=move_rules, initial_state=initial_state, iterations=interations, show_animation=show_animation, show_grid=show_grid, show_info=show_info)
+    ant_simulator = LangtonsAnt(board_size=board_size, ant_position=ant_position, ant_direction=ant_direction, move_rules=move_rules, initial_state=initial_state, iterations=interations, show_animation=show_animation, show_grid=show_grid, show_info=show_info, show_initial_ant=show_initial_ant)
     ant_simulator.run(output_file=output_file)
