@@ -9,4 +9,6 @@ The following parameters are described:
 - **move_rules:** the ant's move rules (default is "rl", which means turn right on white squares, turn left on black squares)
 - **initial_state:** the initial state of the board, supported "white", "black" and "checkerboard"
 - **iterations:** number of iterations (default is 1000)
-- **show_animation:** if or not to output the animation via matplotlib.pyplot (default is True)
+- **show_animation:** whether to output the animation via matplotlib.pyplot (default is True)
+- **show_grid:** whether to add a grid to a static image
+- **show_info:** whether to display detailed parameters in a static image
